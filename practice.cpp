@@ -18,7 +18,6 @@ int main()
         fout<<v[i];
     }
     fout.close();
-
     return 0;
 
 }
