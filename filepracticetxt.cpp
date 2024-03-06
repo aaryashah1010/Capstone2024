@@ -53,7 +53,7 @@ void insertdata(vector<inmates> &inmatesList) {
         ss >> i1.minutes;
         ss.ignore();
         
-      
+        
         if (!ss.eof()) {
             int sleepHour;
             while (ss >> sleepHour) {
