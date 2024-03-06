@@ -11,6 +11,7 @@ public:
     int ear_id;
     vector<int> sleep_time;
     int minutes;
+    int members;
 };
 
 class dorm {
@@ -69,15 +70,39 @@ void insertdata(vector<inmates> &inmatesList) {
     fin.close();
     cout << "Total inmates: " << inmatesList.size() << endl;
 }
+void assigndorm(vector<inmates>&inmatesList,vector<dorm>&dormlist)
+{
+    cout<<endl;
+     for(int i=0;i<inmatesList.size();i=i+2)
+     {
+        if(i+1<inmatesList.size())
+        {
+            dorm d;
+            d.dorm_name="Dorm"+to_string(i/2+1);
+            dormlist.push_back(d);
+            inmatesList[i].members=2;
+            inmatesList[i+1].members=2;
+            cout << "Assigned inmates " << inmatesList[i].name << " and " << inmatesList[i + 1].name << " to " << d.dorm_name << endl;
+        }
+        else{
+            dorm d;
+            d.dorm_name="Single dorm "+to_string(i/2+1);
+            dormlist.push_back(d);
+            inmatesList[i].members=1;
+            cout << "Assigned inmate " << inmatesList[i].name << " to " << d.dorm_name << endl;
+        }
+     }
+}
 
 
 int main() {
-    vector<inmates> inmatesList; // Vector to store multiple inmates
+    vector<inmates> inmatesList; 
+    vector<dorm>dormlist;  
     insertdata(inmatesList);
-    
     for (int i = 0; i < inmatesList.size(); ++i) {
         displayInmates(inmatesList[i]);
-    }
+    }                 
     
+    assigndorm(inmatesList,dormlist);
     return 0;
 }
