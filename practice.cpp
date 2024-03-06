@@ -1,7 +1,9 @@
-#include<iostream>
-#include<fstream>
-#include<vector>
+#include <iostream>
+#include <fstream>
+#include <vector>
+
 using namespace std;
+
 int main()
 {
     vector <int>v(5);
@@ -16,5 +18,7 @@ int main()
         fout<<v[i];
     }
     fout.close();
+
+    return 0;
 
 }
