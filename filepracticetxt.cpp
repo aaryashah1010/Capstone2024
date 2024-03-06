@@ -21,6 +21,7 @@ public:
 };
 
 void displayInmates(const inmates& inmate) {
+    cout<<endl;
     cout << "Name: " << inmate.name << endl;
     cout << "Ear ID: " << inmate.ear_id << endl;
     cout << "Minutes: " << inmate.minutes << endl;
@@ -31,34 +32,38 @@ void displayInmates(const inmates& inmate) {
     cout << endl;
 }
 
-void insertdata(inmates &i1) {
+void insertdata(vector<inmates> &inmatesList) {
     ifstream fin("cap.txt");
     if (!fin.is_open()) {
-        cerr << "Unable to open file" << endl;
+        cout << "Unable to open file" << endl;
         return;
     }
 
     string line;
-    int i = 0; // Initialize i to count the number of inmates
 
     while (getline(fin, line)) {
+        inmates i1; 
         stringstream ss(line);
         ss >> i1.name >> i1.ear_id >> i1.minutes;
-        i1.sleep_time.clear(); // Clear sleep_time vector
+        i1.sleep_time.clear(); 
         int sleep_hour;
         while (ss >> sleep_hour) {
             i1.sleep_time.push_back(sleep_hour);
         }
-        i++; // Increment i for each inmate read
+        inmatesList.push_back(i1); 
     }
 
     fin.close();
-    cout << "Total inmates: " << i << endl;
+    cout << "Total inmates: " << inmatesList.size() << endl;
 }
 
 int main() {
-    inmates i1;
-    insertdata(i1);
-    displayInmates(i1); // Display the data read into i1
+    vector<inmates> inmatesList; // Vector to store multiple inmates
+    insertdata(inmatesList);
+    
+    for (int i = 0; i < inmatesList.size(); ++i) {
+        displayInmates(inmatesList[i]);
+    }
+    
     return 0;
 }
