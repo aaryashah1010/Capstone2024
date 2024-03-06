@@ -21,13 +21,15 @@ public:
 };
 
 void displayInmates(const inmates& inmate) {
-    cout<<endl;
-    cout << "Name: " << inmate.name << endl;
-    cout << "Ear ID: " << inmate.ear_id << endl;
-    cout << "Minutes: " << inmate.minutes << endl;
+    cout << endl;
+    cout << "Name: " << inmate.name <<endl;
+    cout << "Ear ID: " << inmate.ear_id <<endl;
+    cout << "Minutes: " << inmate.minutes <<endl;
     cout << "Sleep Time: ";
     for(int i = 0; i < inmate.sleep_time.size(); i++) {
-        cout << inmate.sleep_time[i] << " ";
+        cout << inmate.sleep_time[i];
+        if(i < inmate.sleep_time.size() - 1)
+            cout << ", ";
     }
     cout << endl;
 }
@@ -42,20 +44,32 @@ void insertdata(vector<inmates> &inmatesList) {
     string line;
 
     while (getline(fin, line)) {
-        inmates i1; 
+        inmates i1;
         stringstream ss(line);
-        ss >> i1.name >> i1.ear_id >> i1.minutes;
-        i1.sleep_time.clear(); 
-        int sleep_hour;
-        while (ss >> sleep_hour) {
-            i1.sleep_time.push_back(sleep_hour);
+        
+        getline(ss, i1.name, ',');
+        ss >> i1.ear_id;
+        ss.ignore();
+        ss >> i1.minutes;
+        ss.ignore();
+        
+      
+        if (!ss.eof()) {
+            int sleepHour;
+            while (ss >> sleepHour) {
+                i1.sleep_time.push_back(sleepHour);
+                if (ss.peek() == ',')
+                    ss.ignore(); 
+            }
         }
-        inmatesList.push_back(i1); 
+        
+        inmatesList.push_back(i1);
     }
 
     fin.close();
     cout << "Total inmates: " << inmatesList.size() << endl;
 }
+
 
 int main() {
     vector<inmates> inmatesList; // Vector to store multiple inmates
