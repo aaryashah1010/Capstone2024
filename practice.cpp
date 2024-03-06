@@ -1,22 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-#include "libxl.h"
+
 using namespace std;
 
-void FetchData(){
-    Book* book = xlCreatebook();
-    if (book->load("data.xlsx")){
-        Sheet* sheet = book->getSheet(0);
-        Cell* cell = sheet->getCell(1,1);
-        double value = cell->getDoubleValue();
-        cout<<value<<endl;
-        book->release();
-    }
-    else{
-        cout<<"File Not Exist"<<endl;
-    }
-}
 int main()
 {
     vector <int>v(5);
@@ -31,7 +18,7 @@ int main()
         fout<<v[i];
     }
     fout.close();
-    FetchData();
+
     return 0;
 
 }
