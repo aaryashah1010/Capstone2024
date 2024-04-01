@@ -24,7 +24,8 @@ class Dorm {
 public:
     string dorm_name;
     int channels_id;
-    string music_id;    
+    string music_id;
+    vector<int> channels; // Vector to hold channel IDs
 };
 
 void displayInmates(const Inmate& inmate) {
@@ -48,7 +49,7 @@ void insertdata(vector<Inmate>& inmatesList) {
     string line;
 
     while (getline(fin, line)) {
-        if (line.empty()) continue; 
+        if (line.empty()) continue;
         Inmate i1;
         stringstream ss(line);
 
@@ -75,33 +76,58 @@ void insertdata(vector<Inmate>& inmatesList) {
 void assigndorm(vector<Inmate>& inmatesList, vector<Dorm>& dormlist) {
     cout << endl;
     int musicID = 1;
+    int channelID = 1;
+
     for (int i = 0; i < inmatesList.size(); i += 2) {
         if (i + 1 < inmatesList.size()) {
             Dorm d;
-            d.dorm_name = "Dorm" + to_string(i / 2 + 1);
+            d.dorm_name = "Dorm" + to_string((i / 2)  + 1);
             dormlist.push_back(d);
             inmatesList[i].members = 2;
             inmatesList[i + 1].members = 2;
             dormlist.back().music_id = "MUSIC" + to_string(musicID); // Assign unique music IDs
+            
+            // Assign channels
+            dormlist.back().channels.push_back(channelID++);
+            dormlist.back().channels.push_back(channelID++);
+
+            // Repeat channels after every 5 dorms
+            if ((i / 2 + 1) % 5 == 0) {
+                channelID = 1; // Reset channel ID
+            }
+
             musicID++;
-            cout << "Assigned inmates " << inmatesList[i].name << " and " << inmatesList[i + 1].name << " to " << d.dorm_name << " having music system " << dormlist.back().music_id << endl;
+            cout << "Assigned inmates " << inmatesList[i].name << " and " << inmatesList[i + 1].name << " to " << d.dorm_name << " having music system " << dormlist.back().music_id << " with channels " << dormlist.back().channels[0] << " and " << dormlist.back().channels[1] << endl;
         } else {
             Dorm d;
-            d.dorm_name = "Single dorm " + to_string(i / 2 + 1);
+            d.dorm_name = "Single dorm " + to_string((i / 2) + 1);
             dormlist.push_back(d);
             inmatesList[i].members = 1;
             dormlist.back().music_id = "MUSIC" + to_string(musicID); // Assign unique music IDs
+            
+            // Assign channels for single dorms
+            dormlist.back().channels.push_back(channelID++);
+            dormlist.back().channels.push_back(channelID++);
+
+            // Repeat channels after every 5 dorms
+            if ((i / 2 + 1) % 5 == 0) {
+                channelID = 1; // Reset channel ID
+            }
+
             musicID++;
-            cout << "Assigned inmate " << inmatesList[i].name << " to " << d.dorm_name << " having music system " << dormlist.back().music_id << endl;
+            cout << "Assigned inmate " << inmatesList[i].name << " to " << d.dorm_name << " having music system " << dormlist.back().music_id << " with channels " << dormlist.back().channels[0] << " and " << dormlist.back().channels[1] << endl;
         }
     }
 }
-void sleeping(vector<Inmate>&inmatesList,vector<Dorm>&dormlist){
-         for(int i=0;i<dormlist.size();i++)
-         {
-              cout << "For " << dormlist[i].dorm_name << ", Music System ID: " << dormlist[i].music_id << endl;
-                
-         }
+
+void sleeping(vector<Inmate>& inmatesList, vector<Dorm>& dormlist) {
+    for (int i = 0; i < dormlist.size(); i++) {
+        cout << "For " << dormlist[i].dorm_name << ", Music System ID: " << dormlist[i].music_id << ", Channels:";
+        for (int j = 0; j < dormlist[i].channels.size(); ++j) {
+            cout << " " << dormlist[i].channels[j];
+        }
+        cout << endl;
+    }
 }
 
 int main() {
@@ -109,12 +135,14 @@ int main() {
     vector<Dorm> dormlist;
 
     insertdata(inmatesList);
-   
+
     for (int i = 0; i < inmatesList.size(); ++i) {
         displayInmates(inmatesList[i]);
     }
-     
+
     assigndorm(inmatesList, dormlist);
+
+    //sleeping(inmatesList, dormlist);
 
     return 0;
 }
