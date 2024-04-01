@@ -48,7 +48,7 @@ void insertdata(vector<Inmate>& inmatesList) {
     string line;
 
     while (getline(fin, line)) {
-        if (line.empty()) continue; // Skip empty lines
+        if (line.empty()) continue; 
         Inmate i1;
         stringstream ss(line);
 
@@ -74,22 +74,34 @@ void insertdata(vector<Inmate>& inmatesList) {
 
 void assigndorm(vector<Inmate>& inmatesList, vector<Dorm>& dormlist) {
     cout << endl;
-    for (int i = 0; i < inmatesList.size(); i = i + 2) {
+    int musicID = 1;
+    for (int i = 0; i < inmatesList.size(); i += 2) {
         if (i + 1 < inmatesList.size()) {
             Dorm d;
             d.dorm_name = "Dorm" + to_string(i / 2 + 1);
             dormlist.push_back(d);
             inmatesList[i].members = 2;
             inmatesList[i + 1].members = 2;
-            cout << "Assigned inmates " << inmatesList[i].name << " and " << inmatesList[i + 1].name << " to " << d.dorm_name<<endl;
+            dormlist.back().music_id = "MUSIC" + to_string(musicID); // Assign unique music IDs
+            musicID++;
+            cout << "Assigned inmates " << inmatesList[i].name << " and " << inmatesList[i + 1].name << " to " << d.dorm_name << " having music system " << dormlist.back().music_id << endl;
         } else {
             Dorm d;
             d.dorm_name = "Single dorm " + to_string(i / 2 + 1);
             dormlist.push_back(d);
             inmatesList[i].members = 1;
-            cout << "Assigned inmate " << inmatesList[i].name << " to " << d.dorm_name<<endl;
+            dormlist.back().music_id = "MUSIC" + to_string(musicID); // Assign unique music IDs
+            musicID++;
+            cout << "Assigned inmate " << inmatesList[i].name << " to " << d.dorm_name << " having music system " << dormlist.back().music_id << endl;
         }
     }
+}
+void sleeping(vector<Inmate>&inmatesList,vector<Dorm>&dormlist){
+         for(int i=0;i<dormlist.size();i++)
+         {
+              cout << "For " << dormlist[i].dorm_name << ", Music System ID: " << dormlist[i].music_id << endl;
+                
+         }
 }
 
 int main() {
@@ -98,11 +110,11 @@ int main() {
 
     insertdata(inmatesList);
    
-
     for (int i = 0; i < inmatesList.size(); ++i) {
         displayInmates(inmatesList[i]);
     }
-     assigndorm(inmatesList, dormlist);
+     
+    assigndorm(inmatesList, dormlist);
 
     return 0;
 }
