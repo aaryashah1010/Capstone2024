@@ -2,10 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-<<<<<<< HEAD
 #include <unordered_map>
-=======
->>>>>>> 1e4ed3848a8483c5b8dde74292211d444b667b6f
 #include <iomanip>
 using namespace std;
 
@@ -28,12 +25,8 @@ class Dorm {
 public:
     string dorm_name;
     int channels_id;
-<<<<<<< HEAD
     string music_id;
     vector<int> channels; // Vector to hold channel IDs
-=======
-    string music_id;    
->>>>>>> 1e4ed3848a8483c5b8dde74292211d444b667b6f
 };
 
 void displayInmates(const Inmate& inmate) {
@@ -42,13 +35,8 @@ void displayInmates(const Inmate& inmate) {
     cout << "Ear ID: " << inmate.ear_id << endl;
     cout << "Minutes: " << inmate.minutes << endl;
     cout << "Daily Sleep Time:" << endl;
-<<<<<<< HEAD
     for (const auto& daily : inmate.daily_sleep) {
         cout << "Day " << daily.day << ": " << daily.sleep_time << endl;
-=======
-    for (const auto& day : inmate.daily_sleep) {
-        cout << "Day " << day.day << ": " << day.sleep_time << endl;
->>>>>>> 1e4ed3848a8483c5b8dde74292211d444b667b6f
     }
 }
 
@@ -62,18 +50,13 @@ void insertdata(vector<Inmate>& inmatesList) {
     string line;
 
     while (getline(fin, line)) {
-<<<<<<< HEAD
         if (line.empty()) continue;
-=======
-        if (line.empty()) continue; // Skip empty lines
->>>>>>> 1e4ed3848a8483c5b8dde74292211d444b667b6f
         Inmate i1;
         stringstream ss(line);
 
         ss >> i1.name >> i1.ear_id >> i1.minutes;
 
         int day = 1;
-<<<<<<< HEAD
         while (!ss.eof()) {
             DailySleep daily;
             daily.day = day++;
@@ -81,13 +64,6 @@ void insertdata(vector<Inmate>& inmatesList) {
             string sleepTime;
             ss >> sleepTime;
             daily.sleep_time = sleepTime;
-=======
-        while (ss >> line) {
-            DailySleep daily;
-            daily.day = day++;
-
-            daily.sleep_time = line;
->>>>>>> 1e4ed3848a8483c5b8dde74292211d444b667b6f
 
             i1.daily_sleep.push_back(daily);
         }
@@ -98,7 +74,6 @@ void insertdata(vector<Inmate>& inmatesList) {
     cout << "Total inmates: " << inmatesList.size() << endl;
 }
 
-<<<<<<< HEAD
 void assigndorm(vector<Inmate>& inmatesList, unordered_map<string, Dorm>& dormMap) {
     cout << endl;
     int musicID = 1;
@@ -159,11 +134,6 @@ void sleeping(vector<Inmate>& inmatesList, unordered_map<string, Dorm>& dormMap)
 int main() {
     vector<Inmate> inmatesList;
     unordered_map<string, Dorm> dormMap;
-=======
-int main() {
-    vector<Inmate> inmatesList;
-    vector<Dorm> dormlist;
->>>>>>> 1e4ed3848a8483c5b8dde74292211d444b667b6f
 
     insertdata(inmatesList);
 
@@ -171,12 +141,9 @@ int main() {
         displayInmates(inmatesList[i]);
     }
 
-<<<<<<< HEAD
     assigndorm(inmatesList, dormMap);
 
     //sleeping(inmatesList, dormMap);
 
-=======
->>>>>>> 1e4ed3848a8483c5b8dde74292211d444b667b6f
     return 0;
 }
