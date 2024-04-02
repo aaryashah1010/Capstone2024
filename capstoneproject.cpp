@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
+#include <unordered_map>
 #include <iomanip>
 using namespace std;
 
@@ -24,7 +25,8 @@ class Dorm {
 public:
     string dorm_name;
     int channels_id;
-    string music_id;    
+    string music_id;
+    vector<int> channels; // Vector to hold channel IDs
 };
 
 void displayInmates(const Inmate& inmate) {
@@ -48,7 +50,7 @@ void insertdata(vector<Inmate>& inmatesList) {
     string line;
 
     while (getline(fin, line)) {
-        if (line.empty()) continue; // Skip empty lines
+        if (line.empty()) continue;
         Inmate i1;
         stringstream ss(line);
 
@@ -72,37 +74,76 @@ void insertdata(vector<Inmate>& inmatesList) {
     cout << "Total inmates: " << inmatesList.size() << endl;
 }
 
-void assigndorm(vector<Inmate>& inmatesList, vector<Dorm>& dormlist) {
+void assigndorm(vector<Inmate>& inmatesList, unordered_map<string, Dorm>& dormMap) {
     cout << endl;
-    for (int i = 0; i < inmatesList.size(); i = i + 2) {
+    int musicID = 1;
+    int channelID = 1;
+
+    for (int i = 0; i < inmatesList.size(); i += 2) {
         if (i + 1 < inmatesList.size()) {
             Dorm d;
-            d.dorm_name = "Dorm" + to_string(i / 2 + 1);
-            dormlist.push_back(d);
+            d.dorm_name = "Dorm" + to_string((i / 2)  + 1);
+            d.music_id = "MUSIC" + to_string(musicID);
+            
+            // Assign channels
+            d.channels.push_back(channelID++);
+            d.channels.push_back(channelID++);
+
+            // Repeat channels after every 5 dorms
+            if ((i / 2 + 1) % 5 == 0) {
+                channelID = 1; // Reset channel ID
+            }
+
+            musicID++;
+            dormMap[d.dorm_name] = d;
             inmatesList[i].members = 2;
             inmatesList[i + 1].members = 2;
-            cout << "Assigned inmates " << inmatesList[i].name << " and " << inmatesList[i + 1].name << " to " << d.dorm_name<<endl;
+            cout << "Assigned inmates " << inmatesList[i].name << " and " << inmatesList[i + 1].name << " to " << d.dorm_name << " having music system " << d.music_id << " with channels " << d.channels[0] << " and " << d.channels[1] << endl;
         } else {
             Dorm d;
-            d.dorm_name = "Single dorm " + to_string(i / 2 + 1);
-            dormlist.push_back(d);
+            d.dorm_name = "Single dorm " + to_string((i / 2) + 1);
+            d.music_id = "MUSIC" + to_string(musicID);
+            
+            // Assign channels for single dorms
+            d.channels.push_back(channelID++);
+            d.channels.push_back(channelID++);
+
+            // Repeat channels after every 5 dorms
+            if ((i / 2 + 1) % 5 == 0) {
+                channelID = 1; // Reset channel ID
+            }
+
+            musicID++;
+            dormMap[d.dorm_name] = d;
             inmatesList[i].members = 1;
-            cout << "Assigned inmate " << inmatesList[i].name << " to " << d.dorm_name<<endl;
+            cout << "Assigned inmate " << inmatesList[i].name << " to " << d.dorm_name << " having music system " << d.music_id << " with channels " << d.channels[0] << " and " << d.channels[1] << endl;
         }
+    }
+}
+
+void sleeping(vector<Inmate>& inmatesList, unordered_map<string, Dorm>& dormMap) {
+    for (const auto& dorm : dormMap) {
+        cout << "For " << dorm.first << ", Music System ID: " << dorm.second.music_id << ", Channels:";
+        for (const auto& channel : dorm.second.channels) {
+            cout << " " << channel;
+        }
+        cout << endl;
     }
 }
 
 int main() {
     vector<Inmate> inmatesList;
-    vector<Dorm> dormlist;
+    unordered_map<string, Dorm> dormMap;
 
     insertdata(inmatesList);
-   
 
     for (int i = 0; i < inmatesList.size(); ++i) {
         displayInmates(inmatesList[i]);
     }
-     assigndorm(inmatesList, dormlist);
+
+    assigndorm(inmatesList, dormMap);
+
+    //sleeping(inmatesList, dormMap);
 
     return 0;
 }
