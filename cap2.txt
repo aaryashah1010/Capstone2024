@@ -1,0 +1,26 @@
+Inmate record
+Aarya
+1234
+10:30PM 11:00PM 10:45PM 10:30PM 11:15PM 11:00PM 10:45PM
+15
+Dorm record
+DormA
+1 101 102
+
+Inmate record
+John
+5678
+11:00PM 10:45PM 11:30PM 11:15PM 11:00PM 10:45PM 11:30PM
+20
+Dorm record
+DormB
+2 201 202
+
+Inmate record
+Alice
+9101
+10:45PM 11:00PM 11:15PM 11:30PM 11:15PM 11:00PM 10:45PM
+25
+Dorm record
+DormA
+1 101 102
